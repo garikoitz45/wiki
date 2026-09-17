@@ -5,7 +5,16 @@ title: Prototipo de asistente IA para KDE
 
 # Prototipo de asistente IA para KDE
 
-El proyecto incluye un prototipo en `examples/cachyos-butler/` que proporciona una ventana de chat Qt para KDE Plasma. Puede usar Ollama localmente y dispone de tres acciones explícitas: consultar el sistema, listar el directorio personal y abrir aplicaciones permitidas.
+El proyecto incluye un prototipo en `examples/cachyos-butler/` que proporciona una ventana de chat Qt para KDE Plasma. Puede usar Ollama localmente y dispone de una capa de seguridad básica para confirmar ciertas acciones antes de ejecutarlas.
+
+## Mejoras incorporadas
+
+- registro local de auditoría en `~/.local/state/cachyos-butler/audit.log`
+- sistema de confirmación antes de abrir aplicaciones
+- estructura preparada para widget de KDE Plasma
+- botón de “voz” con estado pendiente de integración
+- preparación para servicio `systemd --user`
+- validación por riesgo y lista blanca de acciones
 
 ## Instalación
 
@@ -24,10 +33,14 @@ ollama serve
 ollama pull qwen2.5:7b
 ```
 
+## Servicio de usuario systemd
+
+El ejemplo de servicio incluido en `examples/cachyos-butler/cachyos-butler.service` prepara la base para arrancar la app en la sesión gráfica de KDE, de forma similar a un asistente de escritorio en segundo plano.
+
 ## Modelo de seguridad
 
-El prototipo no ejecuta comandos de shell arbitrarios ni utiliza `sudo`. Las herramientas están implementadas como funciones independientes con una lista de aplicaciones permitidas. Las futuras herramientas de administración deben añadir validación de argumentos, niveles de riesgo, confirmación visible y registro de auditoría antes de poder modificar el sistema.
+El prototipo no ejecuta comandos de shell arbitrarios ni utiliza `sudo`. Las herramientas están implementadas como funciones independientes con una lista de aplicaciones permitidas. Se ha añadido un registro de auditoría y una capa de confirmación para cada acción mayoritariamente visual.
 
 ## Limitaciones
 
-Esta es una base de desarrollo, no un agente de sistema completo ni un paquete de producción. La integración con el widget de Plasma, el reconocimiento de voz, el servicio systemd de usuario y la gestión avanzada de permisos deben implementarse en fases posteriores.
+Esta sigue siendo una base de desarrollo, no un agente de sistema completo ni un paquete de producción. La integración con un widget real de Plasma, el reconocimiento de voz y la gestión avanzada de permisos deben continuarse en fases posteriores.
