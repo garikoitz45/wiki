@@ -1,21 +1,28 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Instala OptiScaler de forma explícita para un juego seleccionado.
-# No descarga binarios a ciegas ni copia DLLs a todos los juegos.
+# Instala OptiScaler solo para el juego seleccionado.
+# No se descarga ni se inyecta malware ni archivos DLL a ciegas.
 if [[ $# -ne 1 ]]; then
-  printf 'Uso: %s /ruta/al/juego\n' "$0" >&2
+  echo "Uso: $0 /ruta/al/directorio-del-juego" >&2
   exit 64
 fi
 
 game_dir="$1"
 if [[ ! -d "$game_dir" ]]; then
-  printf 'No existe el directorio del juego: %s\n' "$game_dir" >&2
+  echo "No existe la carpeta del juego: $game_dir" >&2
   exit 66
 fi
 
-printf '%s\n' 'OptiScaler es una capa por juego y debe obtenerse de su fuente oficial.'
-printf '%s\n' 'Copia manualmente la versión compatible en el directorio del juego:'
-printf '  %s\n' "$game_dir"
-printf '%s\n' 'Realiza una copia de seguridad y revisa anti-cheat/licencia antes de activarlo.'
-printf '%s\n' 'No se ha instalado ningún binario automáticamente.'
+cat <<EOF
+OptiScaler requiere revisión manual por juego.
+
+Pasos recomendados:
+1. Haz una copia de seguridad del juego.
+2. Descarga la versión compatible desde la fuente oficial.
+3. Comprueba licencia, anti-cheat y compatibilidad del título.
+4. Instálalo solo dentro de $game_dir.
+5. Prueba con la capa desactivada al principio.
+
+No se aplica de forma global ni se descargan binarios automáticamente.
+EOF

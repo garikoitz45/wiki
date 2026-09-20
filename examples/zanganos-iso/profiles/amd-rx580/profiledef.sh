@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Archiso profile definition for ZanganOS AMD RX 580 gaming build.
+set -Eeuo pipefail
+
+# Archiso profile definition for ZanganOS AMD RX 580 gaming ISO.
 iso_name="zanganos-amd-rx580"
 iso_label="ZANGANOS_AMD_RX580_$(date +%Y%m)"
 iso_publisher="ZanganOS <https://github.com/garikoitz45/wiki>"

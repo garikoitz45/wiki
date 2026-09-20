@@ -33,5 +33,20 @@ wget
 rsync
 unzip
 p7zip
+odf
+man-db
+man-pages
+less
+fish
+bash-completion
+noto-fonts
+noto-fonts-cjk
+noto-fonts-extra
+ffmpeg
+mesa-utils
+xorg-xrandr
+xorg-xset
+
+# IA local
 ollama
 llama.cpp

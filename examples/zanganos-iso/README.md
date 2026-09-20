@@ -1,51 +1,56 @@
-# ZanganOS Archiso profiles
+# ZanganOS Archiso final build
 
-Estas carpetas están estructuradas como perfiles de Archiso reales para compilar ISOs separadas por hardware.
+Este directorio contiene la versión final base para compilar dos ISOs separadas de ZanganOS con Archiso/CachyOS.
 
-## Estructura
+## Perfiles incluidos
 
-```text
-examples/zanganos-iso/
-├── README.md
-├── scripts/
-│   └── optiscaler-per-game.sh
-├── profiles/
-│   ├── amd-rx580/
-│   │   ├── profiledef.sh
-│   │   ├── packages.x86_64
-│   │   └── airootfs/
-│   │       └── root/
-│   │           └── customize_airootfs.sh
-│   └── nvidia-rtx2080-super/
-│       ├── profiledef.sh
-│       ├── packages.x86_64
-│       └── airootfs/
-│           └── root/
-│               └── customize_airootfs.sh
-```
+- `profiles/amd-rx580/` — para AMD Radeon RX 580 con Mesa/RADV
+- `profiles/nvidia-rtx2080-super/` — para NVIDIA GeForce RTX 2080 SUPER 8 GiB con driver propietario
 
-## Compilación con Archiso
+## Requisitos
 
-Asegúrate de tener un entorno archiso/cachyos funcionando y el repositorio del perfil de cachyos disponible.
+Necesitas un entorno CachyOS/Archiso con `mkarchiso` disponible:
 
 ```bash
-sudo mkarchiso -v -w work-amd -o out-amd ./examples/zanganos-iso/profiles/amd-rx580
-sudo mkarchiso -v -w work-nvidia -o out-nvidia ./examples/zanganos-iso/profiles/nvidia-rtx2080-super
+sudo pacman -S archiso mkinitcpio mkinitcpio-archiso
+```
+
+O en un entorno CachyOS similar al de la rama de compilación del proyecto.
+
+## Compilación
+
+```bash
+sudo mkarchiso -v -w work-amd -o out-amd ./profiles/amd-rx580
+sudo mkarchiso -v -w work-nvidia -o out-nvidia ./profiles/nvidia-rtx2080-super
+
 mv out-amd/*.iso out-amd/zanganos-amd-rx580.iso
 mv out-nvidia/*.iso out-nvidia/zanganos-nvidia-rtx2080-super.iso
 ```
 
-## Recomendaciones reales
+## Política de seguridad
 
-- Las ISOs se compilan con perfiles separados por GPU.
-- OptiScaler se configura por juego y no se instala de forma global.
-- AMD RX 580 usa Mesa/RADV; NVIDIA RTX 2080 SUPER usa driver propietario.
-- Revisa los nombres de paquetes con los repositorios activos antes de cada build.
-- El perfil debe validarse con `mkarchiso` y probarse en el hardware objetivo.
+- No instalar tokens, claves ni credenciales en la ISO.
+- No añadir `sudo` sin contraseña ni `NOPASSWD`.
+- No activar overclocking ni undervolting automáticamente.
+- OptiScaler se deja como capa por juego, nunca global.
+- El usuario debe dar consentimiento antes de instalar modelos, software extra o componentes opcionales.
 
-## Seguridad
+## En el hardware objetivo
 
-- No instales claves secretas o tokens de servicios externos en la ISO.
-- No habilites SSH ni `NOPASSWD` ni sudo sin contraseña.
-- No fuerces overclocking ni undervolting desde el live environment.
-- Mantén el contenido opcional para que sea decisión del usuario final.
+### AMD RX 580
+
+```bash
+vulkaninfo --summary
+mangohud glxinfo -B
+```
+
+### NVIDIA RTX 2080 SUPER
+
+```bash
+nvidia-smi
+vulkaninfo --summary
+```
+
+## Importante
+
+Este es un perfil de compilación realista; la ISO final requiere validación real del entorno CachyOS/Archiso y comprobación del hardware en el que se instalará.
