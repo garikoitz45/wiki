@@ -1,34 +1,51 @@
-# ZanganOS Gaming ISO profiles
+# ZanganOS Archiso profiles
 
-Este directorio define dos perfiles de hardware para generar imágenes separadas:
+Estas carpetas están estructuradas como perfiles de Archiso reales para compilar ISOs separadas por hardware.
 
-- `amd-rx580/`: AMD Radeon RX 580 con Mesa/RADV.
-- `nvidia-rtx2080-super/`: NVIDIA RTX 2080 SUPER 8 GiB con driver propietario y Vulkan.
+## Estructura
 
-OptiScaler no se fuerza globalmente en el sistema: es una capa/mod por juego y requiere archivos, versión y configuración compatibles con cada título. Los scripts dejan una configuración base segura y un instalador explícito; el usuario debe seleccionar el juego y revisar su compatibilidad.
+```text
+examples/zanganos-iso/
+├── README.md
+├── scripts/
+│   └── optiscaler-per-game.sh
+├── profiles/
+│   ├── amd-rx580/
+│   │   ├── profiledef.sh
+│   │   ├── packages.x86_64
+│   │   └── airootfs/
+│   │       └── root/
+│   │           └── customize_airootfs.sh
+│   └── nvidia-rtx2080-super/
+│       ├── profiledef.sh
+│       ├── packages.x86_64
+│       └── airootfs/
+│           └── root/
+│               └── customize_airootfs.sh
+```
 
-## Construcción
+## Compilación con Archiso
 
-Necesitas un perfil archiso/releng válido y los paquetes disponibles en tus repositorios. Copia el contenido del perfil correspondiente dentro de tu perfil de compilación y ejecuta:
+Asegúrate de tener un entorno archiso/cachyos funcionando y el repositorio del perfil de cachyos disponible.
 
 ```bash
-sudo mkarchiso -v -w work-amd -o out-amd profiles/amd-rx580
-sudo mkarchiso -v -w work-nvidia -o out-nvidia profiles/nvidia-rtx2080-super
+sudo mkarchiso -v -w work-amd -o out-amd ./examples/zanganos-iso/profiles/amd-rx580
+sudo mkarchiso -v -w work-nvidia -o out-nvidia ./examples/zanganos-iso/profiles/nvidia-rtx2080-super
 mv out-amd/*.iso out-amd/zanganos-amd-rx580.iso
 mv out-nvidia/*.iso out-nvidia/zanganos-nvidia-rtx2080-super.iso
 ```
 
-No se debe compilar una ISO NVIDIA en hardware AMD ni asumir que el driver propietario funciona en una GPU distinta. Prueba cada ISO en una máquina virtual con GPU passthrough o en el hardware objetivo.
+## Recomendaciones reales
 
-## OptiScaler
+- Las ISOs se compilan con perfiles separados por GPU.
+- OptiScaler se configura por juego y no se instala de forma global.
+- AMD RX 580 usa Mesa/RADV; NVIDIA RTX 2080 SUPER usa driver propietario.
+- Revisa los nombres de paquetes con los repositorios activos antes de cada build.
+- El perfil debe validarse con `mkarchiso` y probarse en el hardware objetivo.
 
-OptiScaler debe instalarse por juego en el directorio de instalación de Steam/Proton. No se incluye una DLL descargada automáticamente ni una configuración universal, porque la versión adecuada depende del juego, API gráfica, anti-cheat y licencia. Usa una copia de seguridad y conserva una forma de desactivar la capa.
+## Seguridad
 
-Ejemplo conceptual de variables por juego:
-
-```bash
-# Solo como referencia; no es una configuración universal.
-PROTON_ENABLE_NVAPI=1 %command%
-```
-
-Consulta la documentación y los lanzamientos oficiales de OptiScaler antes de copiar sus archivos.
+- No instales claves secretas o tokens de servicios externos en la ISO.
+- No habilites SSH ni `NOPASSWD` ni sudo sin contraseña.
+- No fuerces overclocking ni undervolting desde el live environment.
+- Mantén el contenido opcional para que sea decisión del usuario final.
