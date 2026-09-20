@@ -1,0 +1,28 @@
+wallpaper = Image("wallpaper-zanganos.svg");
+logo = Image("logo.svg");
+
+fun refresh_callback () {
+  logo.SetX(Window.GetX() + Window.GetWidth() / 2 - logo.GetWidth() / 2);
+  logo.SetY(Window.GetY() + Window.GetHeight() / 2 - logo.GetHeight() / 2 - 70);
+  wallpaper.SetX(Window.GetX());
+  wallpaper.SetY(Window.GetY());
+}
+
+fun quit_callback () { }
+fun boot_progress_callback (duration, progress) { }
+fun update_status_callback () { }
+fun display_normal_callback () { }
+fun display_password_callback (prompt, bullets) { }
+fun display_question_callback (prompt, entry) { }
+fun display_message_callback (text) { }
+fun hide_message_callback (text) { }
+fun on_boot_progress (duration, progress) { boot_progress_callback(duration, progress); }
+
+Plymouth.SetRefreshFunction(refresh_callback);
+Plymouth.SetBootProgressFunction(boot_progress_callback);
+Plymouth.SetQuitFunction(quit_callback);
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+Plymouth.SetDisplayQuestionFunction(display_question_callback);
+Plymouth.SetDisplayMessageFunction(display_message_callback);
+Plymouth.SetHideMessageFunction(hide_message_callback);

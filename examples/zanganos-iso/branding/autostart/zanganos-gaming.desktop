@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=ZanganOS Gaming Profile
+Comment=Detecta la GPU y registra el perfil de gaming
+Exec=/usr/local/bin/zanganos-gpu-profile
+Terminal=false
+X-KDE-autostart-after=panel
+OnlyShowIn=KDE;
