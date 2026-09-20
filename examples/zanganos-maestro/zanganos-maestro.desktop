@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Maestro — ZanganOS
+Comment=Panel local para coordinar agentes de IA
+Exec=sh -c "$HOME/.local/bin/zanganos-maestro"
+Icon=applications-development
+Terminal=false
+Categories=Development;Utility;
+OnlyShowIn=KDE;

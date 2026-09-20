@@ -1,0 +1,63 @@
+# Integración de AI Maestro en ZanganOS
+
+ZanganOS utiliza [AI Maestro](https://github.com/23blocks-OS/ai-maestro) como panel de coordinación de agentes. AI Maestro está publicado bajo MIT y ofrece un dashboard web local, soporte Linux y ejecución mediante Node.js 18+ y tmux.
+
+## Diseño
+
+- **Maestro:** dashboard y orquestador de agentes.
+- **KDE Plasma:** lanzador pequeño en el escritorio y autostart de usuario.
+- **Agentes:** se ejecutan con los permisos del usuario, preferiblemente en tmux o contenedores.
+- **IA local:** Ollama/llama.cpp son proveedores opcionales; AI Maestro también admite agentes de terminal compatibles.
+- **Seguridad:** el panel escucha solo en `127.0.0.1:23000` por defecto. No se habilitan gateways, SSH, Tailscale ni tokens automáticamente.
+
+## Instalación en ZanganOS
+
+```bash
+sudo pacman -S --needed git nodejs npm tmux base-devel
+corepack enable
+corepack prepare yarn@stable --activate
+
+mkdir -p "$HOME/.local/opt"
+git clone --depth 1 https://github.com/23blocks-OS/ai-maestro.git "$HOME/.local/opt/ai-maestro"
+cd "$HOME/.local/opt/ai-maestro"
+yarn install
+```
+
+Revisa el código y el `package.json` antes de ejecutar scripts de terceros. Para arrancar el dashboard:
+
+```bash
+cd "$HOME/.local/opt/ai-maestro"
+yarn dev
+```
+
+Abre `http://127.0.0.1:23000` en el navegador. El instalador oficial también existe, pero ZanganOS no lo ejecuta automáticamente durante la construcción de la ISO porque instala dependencias y puede solicitar credenciales o herramientas externas.
+
+## Lanzador pequeño de KDE
+
+El script `examples/zanganos-maestro/maestro-launcher.sh` inicia AI Maestro solo en localhost y abre el dashboard. El archivo `.desktop` permite colocarlo en el menú de KDE o en el autostart.
+
+```bash
+mkdir -p ~/.local/bin ~/.local/share/applications
+install -Dm755 examples/zanganos-maestro/maestro-launcher.sh ~/.local/bin/zanganos-maestro
+install -Dm644 examples/zanganos-maestro/zanganos-maestro.desktop ~/.local/share/applications/zanganos-maestro.desktop
+```
+
+Para autostart opcional:
+
+```bash
+mkdir -p ~/.config/autostart
+cp examples/zanganos-maestro/zanganos-maestro.desktop ~/.config/autostart/
+```
+
+## Agentes gratuitos y coordinación
+
+AI Maestro es agnóstico respecto al agente: puede coordinar herramientas locales que el usuario instale, pero no convierte automáticamente servicios con API, modelos o suscripciones en gratuitos. En ZanganOS se recomienda habilitar primero agentes locales y declarar cada proveedor en la configuración del usuario. Las claves se guardan fuera del repositorio y nunca en la ISO.
+
+## Límites de seguridad
+
+- No exponer el puerto 23000 a la red sin autenticación y firewall.
+- No añadir `ANTHROPIC_API_KEY`, tokens de GitHub ni credenciales a la imagen.
+- No usar `curl | sh` durante el build.
+- No conceder `sudo` sin contraseña al agente.
+- Usar contenedores o usuarios separados para tareas no confiables.
+- Revisar las licencias y condiciones de cada agente y modelo.
