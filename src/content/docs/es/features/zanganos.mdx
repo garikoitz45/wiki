@@ -1,0 +1,53 @@
+# ZanganOS
+
+ZanganOS es la nueva identidad de la distribución basada en CachyOS, con KDE Plasma y una capa opcional de entretenimiento, compatibilidad Windows/Linux y asistencia local mediante IA.
+
+> **Importante:** ZanganOS es un proyecto derivado. Debe conservar las atribuciones, marcas y licencias de CachyOS, Arch Linux, KDE y de cada paquete incluido. El cambio de nombre visual no convierte los componentes upstream en software propio.
+
+## Objetivos
+
+- KDE Plasma como escritorio predeterminado.
+- Steam, Proton y herramientas de compatibilidad instaladas de forma reproducible.
+- Stremio y AceStream como componentes opcionales, sujetos a disponibilidad, licencia y legislación local.
+- IA local y proveedores gratuitos configurables desde una interfaz pequeña llamada **Maestro**.
+- Un mayordomo seguro que coordina agentes, pero nunca ejecuta shell arbitrario ni concede root automáticamente.
+
+## Componentes
+
+| Área | Componentes | Política |
+| --- | --- | --- |
+| Gaming | Steam, Proton, ProtonUp-Qt, Protontricks, PortProton opcional | Instalar desde repositorios oficiales/AUR verificado y mostrar licencia |
+| Vídeo | Stremio opcional | El usuario debe aceptar sus condiciones |
+| Streaming | AceStream/Ace Engine opcional | No se incluye contenido ni fuentes; uso legal bajo responsabilidad del usuario |
+| Desarrollo | Python, pip en entorno virtual, Qt6, PySide6 | No instalar dependencias Python globales sin confirmación |
+| IA | Ollama, llama.cpp, Open WebUI opcional y proveedores locales compatibles | Modelos se descargan bajo acción explícita del usuario |
+| UI | KDE Plasma + Maestro | Acciones con permisos, confirmación y auditoría |
+
+## Integración de agentes
+
+Maestro usa un orquestador y varios agentes especializados:
+
+- `system`: estado, paquetes, servicios y diagnóstico.
+- `gaming`: Steam, Proton, Wine y juegos.
+- `media`: aplicaciones multimedia y bibliotecas locales.
+- `developer`: Python, Qt, Git y entornos virtuales.
+- `research`: consulta de documentación con consentimiento de red.
+- `safety`: valida riesgos, rutas y comandos antes de cualquier herramienta.
+
+Los agentes no se ejecutan todos con privilegios ni comparten secretos. El orquestador selecciona el agente adecuado, combina resultados y solicita confirmación cuando la acción modifica el sistema, instala software, accede a la red o mueve archivos.
+
+## Interfaz Maestro
+
+La interfaz compacta debe ofrecer:
+
+- chat local;
+- selector de perfil: trabajo, gaming, multimedia y seguro;
+- estado de Ollama y modelos disponibles;
+- estado de Steam/Proton y servicios multimedia;
+- vista de acciones pendientes;
+- historial de auditoría;
+- botón de parada para cancelar tareas.
+
+## Construcción
+
+El perfil inicial está en `examples/zanganos-iso/`. La lista base no descarga modelos ni componentes opcionales durante la compilación: se realiza en el primer arranque con consentimiento para mantener la ISO reproducible y evitar incluir software con licencias incompatibles.

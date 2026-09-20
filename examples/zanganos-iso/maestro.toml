@@ -1,0 +1,39 @@
+# Configuración del orquestador Maestro.
+# Cada proveedor es opcional y se habilita solo si está disponible localmente.
+
+[orchestrator]
+name = "Maestro"
+default_profile = "safe"
+require_confirmation_for = ["install", "remove", "write_system", "network", "execute"]
+allow_arbitrary_shell = false
+
+[providers.ollama]
+enabled = true
+base_url = "http://127.0.0.1:11434"
+model = "qwen2.5:7b"
+privacy = "local"
+
+[providers.llama_cpp]
+enabled = false
+base_url = "http://127.0.0.1:8080"
+privacy = "local"
+
+[agents.system]
+enabled = true
+allowed_tools = ["system_status", "list_services", "list_updates"]
+
+[agents.gaming]
+enabled = true
+allowed_tools = ["open_steam", "inspect_proton", "open_protonup"]
+
+[agents.media]
+enabled = true
+allowed_tools = ["open_stremio", "inspect_media_services"]
+
+[agents.developer]
+enabled = true
+allowed_tools = ["open_konsole", "create_python_venv", "inspect_qt"]
+
+[agents.safety]
+enabled = true
+allowed_tools = ["validate_path", "classify_risk", "request_confirmation"]
