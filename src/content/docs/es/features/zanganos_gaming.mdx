@@ -1,0 +1,52 @@
+---
+title: Perfiles gaming AMD y NVIDIA para ZanganOS
+description: ISOs optimizadas para RX 580 y RTX 2080 SUPER
+---
+
+# Perfiles gaming de ZanganOS
+
+Se han definido dos perfiles separados:
+
+- AMD Radeon RX 580: Mesa, RADV y Vulkan Radeon.
+- NVIDIA GeForce RTX 2080 SUPER 8 GiB: `nvidia-utils`, Vulkan NVIDIA y soporte para Wayland/X11.
+
+Ambos perfiles incluyen Steam, Wine, Protontricks, Gamescope y MangoHud. OptiScaler se trata como una capa **por juego**: no existe una configuración universal que sea segura para todos los juegos, APIs gráficas y sistemas anti-cheat.
+
+## Generación
+
+```bash
+sudo mkarchiso -v -w work-amd -o out-amd examples/zanganos-iso/profiles/amd-rx580
+sudo mkarchiso -v -w work-nvidia -o out-nvidia examples/zanganos-iso/profiles/nvidia-rtx2080-super
+mv out-amd/*.iso out-amd/zanganos-amd-rx580.iso
+mv out-nvidia/*.iso out-nvidia/zanganos-nvidia-rtx2080-super.iso
+```
+
+## OptiScaler
+
+Antes de instalarlo en un juego:
+
+1. Haz una copia de seguridad de los archivos.
+2. Descarga una versión compatible desde su fuente oficial.
+3. Lee la licencia y comprueba las restricciones del juego.
+4. Instálalo solo en el directorio elegido.
+5. Prueba primero sin anti-cheat activo y conserva una forma de desactivarlo.
+
+El script `examples/zanganos-iso/scripts/optiscaler-per-game.sh` solo valida la ruta y muestra el procedimiento; no descarga ni ejecuta binarios no verificados.
+
+## Verificación en el hardware
+
+AMD:
+
+```bash
+vulkaninfo --summary
+glxinfo -B
+```
+
+NVIDIA:
+
+```bash
+nvidia-smi
+vulkaninfo --summary
+```
+
+La ISO no debe aplicar overclock, undervolt ni parámetros agresivos por defecto. Ajusta rendimiento después de comprobar temperaturas, estabilidad y compatibilidad del hardware.
