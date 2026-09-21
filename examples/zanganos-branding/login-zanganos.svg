@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Pantalla de inicio ZanganOS">
+  <defs><radialGradient id="b"><stop stop-color="#241044"/><stop offset="1" stop-color="#020205"/></radialGradient><linearGradient id="p"><stop stop-color="#fff"/><stop offset=".45" stop-color="#bd55ff"/><stop offset="1" stop-color="#6819e8"/></linearGradient><filter id="g"><feGaussianBlur stdDeviation="12" result="x"/><feMerge><feMergeNode in="x"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <rect width="1920" height="1080" fill="url(#b)"/><circle cx="960" cy="470" r="250" fill="none" stroke="url(#p)" stroke-width="14" filter="url(#g)"/>
+  <g fill="url(#p)" filter="url(#g)"><path d="M780 630 930 350h100L850 630z"/><path d="M930 350h75l150 280h-80z"/><path d="m855 670 120-160h70L920 670z"/></g>
+  <text x="960" y="790" text-anchor="middle" fill="white" font-family="DejaVu Sans, sans-serif" font-size="104" font-weight="800" letter-spacing="14">ZANGANOS</text>
+  <text x="960" y="850" text-anchor="middle" fill="#dba8ff" font-family="DejaVu Sans, sans-serif" font-size="24" letter-spacing="6">INICIANDO TU ESCRITORIO</text>
+</svg>

@@ -1,0 +1,46 @@
+---
+title: Prototipo de asistente IA para KDE
+ description: Prototipo local de CachyOS Butler desarrollado con Python y Qt
+---
+
+# Prototipo de asistente IA para KDE
+
+El proyecto incluye un prototipo en `examples/cachyos-butler/` que proporciona una ventana de chat Qt para KDE Plasma. Puede usar Ollama localmente y dispone de una capa de seguridad básica para confirmar ciertas acciones antes de ejecutarlas.
+
+## Mejoras incorporadas
+
+- registro local de auditoría en `~/.local/state/cachyos-butler/audit.log`
+- sistema de confirmación antes de abrir aplicaciones
+- estructura preparada para widget de KDE Plasma
+- botón de “voz” con estado pendiente de integración
+- preparación para servicio `systemd --user`
+- validación por riesgo y lista blanca de acciones
+
+## Instalación
+
+```bash
+cd examples/cachyos-butler
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python main.py
+```
+
+En CachyOS, `python-pyside6` también puede instalarse mediante `pacman`. Para activar respuestas de IA locales, instala Ollama, inicia el servicio y descarga un modelo:
+
+```bash
+ollama serve
+ollama pull qwen2.5:7b
+```
+
+## Servicio de usuario systemd
+
+El ejemplo de servicio incluido en `examples/cachyos-butler/cachyos-butler.service` prepara la base para arrancar la app en la sesión gráfica de KDE, de forma similar a un asistente de escritorio en segundo plano.
+
+## Modelo de seguridad
+
+El prototipo no ejecuta comandos de shell arbitrarios ni utiliza `sudo`. Las herramientas están implementadas como funciones independientes con una lista de aplicaciones permitidas. Se ha añadido un registro de auditoría y una capa de confirmación para cada acción mayoritariamente visual.
+
+## Limitaciones
+
+Esta sigue siendo una base de desarrollo, no un agente de sistema completo ni un paquete de producción. La integración con un widget real de Plasma, el reconocimiento de voz y la gestión avanzada de permisos deben continuarse en fases posteriores.

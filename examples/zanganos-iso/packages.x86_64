@@ -1,0 +1,46 @@
+# Perfil de paquetes de ZanganOS
+# Paquetes oficiales o disponibles en repositorios configurados.
+# Los elementos marcados como opcionales deben instalarse con confirmación.
+
+# Base y KDE
+base
+linux-cachyos
+networkmanager
+sddm
+plasma-desktop
+plasma-workspace
+kde-applications
+xdg-desktop-portal-kde
+pipewire
+pipewire-pulse
+wireplumber
+
+# Gaming
+steam
+wine
+wine-gecko
+wine-mono
+protontricks
+
+# Compatibilidad y utilidades
+python
+python-pip
+python-pyside6
+qt6-base
+qt6-declarative
+qt6-tools
+git
+curl
+wget
+rsync
+
+# IA local
+ollama
+llama.cpp
+
+# Opcionales: comprobar disponibilidad y licencia antes de añadirlos a la ISO.
+# protonup-qt
+# portproton
+# stremio
+# acestream-engine
+# open-webui

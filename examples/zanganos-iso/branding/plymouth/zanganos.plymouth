@@ -1,0 +1,5 @@
+# ZanganOS Plymouth theme
+
+[script]
+ImageDir=./zanganos
+ScriptFile=./zanganos.script

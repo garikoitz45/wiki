@@ -1,0 +1,92 @@
+# Prototipo CachyOS Butler
+
+Prototipo local del asistente IA para KDE Plasma desarrollado con Python y PySide6.
+
+## Mejoras añadidas en esta versión
+
+- Confirmación visual antes de ejecutar acciones que abren aplicaciones.
+- Registro de auditoría local en `~/.local/state/cachyos-butler/audit.log`.
+- Soporte de estado para futuro widget de KDE Plasma.
+- Botones de acceso directo para estado, carpeta personal, widget KDE y voz.
+- Módulo de preparación para reconocimiento de voz y servicio `systemd --user`.
+
+## Características
+
+- Interfaz de chat Qt.
+- Conexión opcional con Ollama en `http://127.0.0.1:11434`.
+- Modo demostración si Ollama no está disponible.
+- Herramientas limitadas y explícitas:
+  - consultar el estado básico del sistema;
+  - listar el directorio personal;
+  - abrir aplicaciones de una lista permitida.
+- No ejecuta comandos de shell arbitrarios.
+
+## Requisitos
+
+```bash
+sudo pacman -S python-pyside6
+# Opcional para respuestas locales de IA:
+sudo pacman -S ollama
+ollama serve
+ollama pull qwen2.5:7b
+```
+
+También se puede usar un entorno virtual para instalar `requests`:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Ejecución
+
+```bash
+python main.py
+```
+
+Variables de entorno opcionales:
+
+```bash
+export BUTLER_MODEL=qwen2.5:7b
+export BUTLER_OLLAMA_URL=http://127.0.0.1:11434
+```
+
+## Seguridad
+
+Este prototipo no concede privilegios de root y no interpreta texto como shell. Antes de añadir nuevas herramientas, deben definirse como funciones independientes, validar sus argumentos y clasificarse por nivel de riesgo.
+
+## Servicio de usuario systemd
+
+Se incluye un ejemplo de unidad de usuario para KDE/Plasma:
+
+```ini
+[Unit]
+Description=CachyOS Butler
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env python3 /opt/cachyos-butler/main.py
+Environment=DISPLAY=:0
+WorkingDirectory=/opt/cachyos-butler
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
+```
+
+Se puede instalar en `~/.config/systemd/user/cachyos-butler.service` y activarlo con:
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now cachyos-butler.service
+```
+
+## Siguientes pasos
+
+- Integración con widget de KDE Plasma.
+- Reconocimiento de voz local.
+- Acciones con permisos elevables y confirmación reforzada.
+- Soporte de configuración por perfil (trabajo, estudio, gaming).
